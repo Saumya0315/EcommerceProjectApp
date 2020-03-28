@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="product_category")
 public class ProductCategory {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
@@ -19,6 +20,8 @@ public class ProductCategory {
 	private String categoryName;
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "category")
 	private Set<Product> product;
+	
+	
 	public Long getId() {
 		return id;
 	}
