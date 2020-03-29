@@ -24,7 +24,7 @@ this.productService.getProductCategories().subscribe(
 data=>
 {
 
-  console.log('Product CAtegories='+JSON.stringify(data));
+  console.log('Product Categories='+JSON.stringify(data));
   this.productCategories=data;
 }
 );
