@@ -2,6 +2,8 @@ import { Component, OnInit, ɵALLOW_MULTIPLE_PLATFORMS } from '@angular/core';
 import { Product } from 'src/app/common/product';
 import { ProductService } from 'src/app/services/product.service';
 import { ActivatedRoute } from '@angular/router';
+import { CartItem } from 'src/app/common/cart-item';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -22,6 +24,7 @@ theTotalElements=0;
 previousKeyword:string=null;
 
   constructor(private productService  :ProductService,
+    private cartService:CartService,
     private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -106,7 +109,14 @@ updatePageSize(pageSize:number)
 }
 
 
+addToCart(theProduct:Product){
+  console.log(`Adding to cart: ${theProduct.unitPrice} , ${theProduct.unitsIntock}`);
 
+
+  const theCartItem= new CartItem(theProduct);
+  this.cartService.addToCart(theCartItem);
+
+}
 
 
 }
