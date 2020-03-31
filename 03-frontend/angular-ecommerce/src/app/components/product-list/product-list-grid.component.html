@@ -13,7 +13,7 @@
     <div class="product-box">
         <a routerLink="/products/{{tempProduct.id}}">
             <img src="{{tempProduct.imageUrl}}" class="img-responsive">
-        </a>
+        </a>    
         <a routerLink="/products/{{tempProduct.id}}">
 
             <h1> {{tempProduct.name}}</h1>
@@ -31,6 +31,67 @@
 
 
     </div>
+   
+
+<div class="footer-pagination">
+   
+
+    <div class="row">
+        
+
+        <div class="col-md-6">
+           
+        </div>
+        <div class="col-md-6">
+
+            <div class="row">
+                <div >
+
+                    <span style="font-size: large;">Page Size</span>
+                    
+                    <select class="ml-2" (change)="updatePageSize($event.target.value)">
+                        
+                        <option selected="true">5</option>
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                    </select>
+                    </div>
+             
+
+<div class="col-md-9" style="padding-left:10%">
+
+    
+<ngb-pagination  [(page)]="thePageNumber"
+                [pageSize]="thePageSize"
+                [collectionSize]="theTotalElements"
+                [maxSize]="5"
+                [boundaryLinks]="true"
+                (pageChange)="listProducts()">
+
+
+</ngb-pagination>
+
+</div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
     </div>

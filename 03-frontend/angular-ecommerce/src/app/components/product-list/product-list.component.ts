@@ -10,9 +10,17 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductListComponent implements OnInit {
 
-  product:Product[];
-  currentCategoryId:number;
-    searchMode:boolean;
+  product:Product[]=[];
+  currentCategoryId:number=1;
+  thePreviousCategoryId:number=1;
+    searchMode:boolean=false;
+//new properties for pagination
+thePageNumber:number =1;
+thePageSize:number =5;
+theTotalElements=0;
+
+previousKeyword:string=null;
+
   constructor(private productService  :ProductService,
     private route: ActivatedRoute) { }
 
@@ -48,27 +56,57 @@ else{
   //id not available
   this.currentCategoryId=1;
 }
-///get the product for given category id
+
+//get the product for given category id
 
 
-    this.productService.getProductList(this.currentCategoryId).subscribe(
+if(this.thePreviousCategoryId!=this.currentCategoryId){
+  this.thePageNumber=1;
+}
 
-      data=>{
-        this.product=data;
-      }
-    )
+this.thePreviousCategoryId=this.currentCategoryId;
+console.log(`currentCategoryId=${this.currentCategoryId}, thePageNumber=${this.thePageNumber}`);
+
+this.productService.getProductListPaginate(this.thePageNumber-1,this.thePageSize,this.currentCategoryId).subscribe(
+      this.processResult());
   }
+
+ 
 
   handleSearchProduct(){
 
     const theKeyword:string=this.route.snapshot.paramMap.get('keyword');
-    this.productService.searchProducts(theKeyword).subscribe(
 
-      data=>{
-        this.product=data;
-      }
-    )
+    if(this.previousKeyword!=theKeyword){
+      this.thePageNumber=1;
+    }
+    
+    this.previousKeyword=theKeyword;
+    console.log(`theKeyword=${theKeyword}, thePageNumber=${this.thePageNumber}`);
+    
+    this.productService.searchProductPaginate(this.thePageNumber-1,this.thePageSize,theKeyword).subscribe(
+          this.processResult());
+
+
   }
+  processResult(){
+    return data=>{
+      this.product=data._embedded.products;
+      this.thePageNumber=data.page.number+1;
+      this.thePageSize=data.page.size;
+      this.theTotalElements=data.page.totalElements;
+    };
+  }
+
+updatePageSize(pageSize:number)
+{
+  this.thePageSize=pageSize;
+  this.thePageNumber=1;
+  this.listProducts();
+}
+
+
+
 
 
 }
